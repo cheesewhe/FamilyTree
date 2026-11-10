@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Семейный архив Тимофеевых и Воронцовых: родословная на 14 поколений, памятные даты, документы и история семьи.">
+    <meta name="theme-color" content="#EEF0EC">
+    <title>Тимофеевы и Воронцовы — семейный архив</title>
+    <link rel="icon" href="assets/img/seal.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="wrap topbar-inner">
+            <a href="index.html" class="wordmark"><svg class="wordmark-seal" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M16 8v16M16 13l-4-3M16 13l4-3M16 18l-5-3.5M16 18l5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Тимофеевы и Воронцовы</span></a>
+            <button id="navToggle" type="button" class="nav-toggle" aria-label="Открыть меню разделов" aria-expanded="false" aria-controls="siteNav"><i class="fas fa-bars" aria-hidden="true"></i><span class="nt-label">Разделы</span></button>
+            <nav id="siteNav" class="site-nav" data-open="false" aria-label="Разделы сайта"><noscript><a href="index.html" class="nav-link">Все разделы — на главной</a></noscript></nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero wrap">
+            <div>
+                <h1>Тимофеевы<span class="and">и</span>Воронцовы</h1>
+                <p class="lede">История семьи: 14 поколений, 7150 человек и восемь фамилий — от крестьян Тверской губернии до наших дней.</p>
+                <p class="today">Сегодня <span id="todayDate"></span></p>
+            </div>
+            <figure class="print">
+                <img src="assets/img/family-photo.jpg" alt="Семья Тимофеевых за праздничным столом у новогодней ёлки" width="1600" height="1200">
+                <figcaption>Семья Тимофеевых</figcaption>
+                <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true">
+                    <defs><path id="ring" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+                    <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <circle cx="100" cy="100" r="58" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <text font-size="14" letter-spacing="1.5" fill="currentColor"><textPath href="#ring" textLength="452" lengthAdjust="spacing">СЕМЕЙНЫЙ АРХИВ ✦ ТИМОФЕЕВЫ ✦ ВОРОНЦОВЫ ✦</textPath></text>
+                    <text x="100" y="96" text-anchor="middle" font-size="13" fill="currentColor">с</text>
+                    <text x="100" y="124" text-anchor="middle" font-size="34" font-weight="700" fill="currentColor" style="font-family:'Old Standard TT',serif">1645</text>
+                </svg>
+            </figure>
+        </section>
+        <section class="wrap timeline-band" aria-labelledby="tl-title">
+            <h2 id="tl-title">Четыре века одной семьи</h2>
+            <p class="block-sub">Синим отмечена линия отца, бордовым — линия мамы.</p>
+            <ol id="timeline" class="tl"></ol>
+            <ul class="facts">
+                <li><b>14</b>поколений</li>
+                <li><b>7150</b>человек в древе</li>
+                <li><b>8</b>фамилий: Тимофеевы, Усачевы, Волковы, Лопатины, Воронцовы, Чекмаревы, Носовы, Галяевы</li>
+            </ul>
+        </section>
+
+        <section class="wrap home-block" aria-labelledby="up-title">
+            <h2 id="up-title" class="block-title">Ближайшие даты</h2>
+            <p class="block-sub">Дни рождения, свадьбы и дни памяти.</p>
+            <ul id="upcomingDates" class="upcoming"></ul>
+            <a href="kalendar-dat.html" class="more-link">Открыть весь календарь</a>
+        </section>
+
+        <section class="wrap home-block" aria-labelledby="cat-title">
+            <h2 id="cat-title" class="block-title">Разделы архива</h2>
+            <p class="block-sub">Начните с древа семьи или с одной из двух линий.</p>
+            <div id="catalog" class="catalog"></div>
+            <div id="catalogMore" class="catalog-more"></div>
+        </section>
+    </main>
+
+    <footer class="site-foot">
+        <div class="wrap">
+            <span class="fm">Семейный архив Тимофеевых и Воронцовых</span>
+            <span>&copy; <span id="footerYear">2026</span> · <a href="kalendar-dat.html">Календарь дат</a></span>
+        </div>
+    </footer>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>

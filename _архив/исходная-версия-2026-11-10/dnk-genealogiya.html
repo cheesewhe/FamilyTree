@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Семейное древо Тимофеевых и Воронцовых: родословная, архивы, памятные даты и история семьи.">
+    <meta name="theme-color" content="#1f2937">
+    <title>ДНК-генеалогия | Семейное древо</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url('https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1471&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #4f46e5;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+    <header class="hero-bg text-white py-14 px-4">
+        <div class="container mx-auto">
+            <div class="flex items-center gap-4 mb-4"><i class="fas fa-dna text-3xl"></i><h1 class="text-3xl md:text-5xl font-bold">ДНК-генеалогия</h1></div>
+            <p class="text-lg text-white/90">Сегодня: <span id="todayDate" class="font-semibold"></span></p>
+            <div class="mt-6 flex flex-wrap gap-4"><a href="osnovnaya-stranica.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Основная страница</a>
+<a href="drevo-semi.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Древо семьи</a>
+<a href="timofeevy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Тимофеевы</a>
+<a href="vorontsovy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Воронцовы</a>
+<a href="dokumenty-i-arhivy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Документы и архивы</a>
+<a href="karta-obitaniya-predkov.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Карта обитания предков</a>
+<a href="k-80-letiyu-pobedy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">К 80-летию Победы</a>
+<a href="blog-novosti.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Блог / новости</a>
+<a href="kalendar-dat.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Календарь дат</a>
+<a href="dnk-genealogiya.html" class="nav-link text-indigo-200 font-semibold text-sm md:text-base">ДНК-генеалогия</a>
+<a href="100-russkiy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">100%-ный русский</a></div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+            <div class="bg-indigo-50 rounded-lg p-5 text-gray-700">Раздел в разработке: лист в ТЗ пока без контента.</div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-10 mt-12">
+        <div class="container mx-auto px-4 text-center text-gray-300">
+            <p>&copy; 2026 Семейное древо Тимофеевых и Воронцовых</p>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" type="button" class="fixed bottom-5 right-5 z-50 hidden rounded-full bg-indigo-600 text-white w-11 h-11 shadow-lg hover:bg-indigo-700 transition" aria-label="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = document.getElementById('todayDate');
+            if (today) {
+                today.textContent = new Intl.DateTimeFormat('ru-RU', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    weekday: 'long'
+                }).format(new Date());
+            }
+        });
+    
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        if (backToTopBtn) {
+            const toggleBackToTop = () => {
+                if (window.scrollY > 320) backToTopBtn.classList.remove('hidden');
+                else backToTopBtn.classList.add('hidden');
+            };
+            window.addEventListener('scroll', toggleBackToTop);
+            toggleBackToTop();
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+</script>
+</body>
+</html>

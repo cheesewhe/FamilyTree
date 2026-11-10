@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Семейное древо Тимофеевых и Воронцовых: родословная, архивы, памятные даты и история семьи.">
+    <meta name="theme-color" content="#1e1b4b">
+    <title>Семейное древо Тимофеевых и Воронцовых</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="font-sans">
+    <header class="hero-bg text-white px-4 pt-6 pb-12">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between gap-4">
+                <a href="index.html" class="flex items-center gap-2 text-indigo-100 hover:text-white font-semibold"><i class="fas fa-tree"></i><span>Тимофеевы · Воронцовы</span></a>
+                <button id="navToggle" type="button" class="md:hidden text-white text-xl px-2" aria-label="Меню" aria-expanded="false" aria-controls="siteNav"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav id="siteNav" data-open="false" class="mt-4 flex flex-wrap gap-x-5 gap-y-2" aria-label="Разделы сайта">
+                <noscript><a href="index.html" class="nav-link text-white">Все разделы — на главной</a></noscript>
+            </nav>
+            <div class="mt-10 flex items-center gap-4"><i class="fas fa-tree text-3xl text-indigo-200"></i><h1 class="text-3xl md:text-5xl font-bold">История семьи Тимофеевых и Воронцовых</h1></div>
+            <p class="mt-3 text-lg text-indigo-100 max-w-3xl">Родословная, документы, памятные даты и хроника поколений.</p>
+            <p class="mt-4 text-sm text-indigo-200">Сегодня: <span id="todayDate" class="font-semibold text-white"></span></p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start mb-12">
+            <figure class="lg:col-span-3 bg-white rounded-xl shadow-sm overflow-hidden">
+                <img src="assets/img/family-photo.jpg" alt="Семья Тимофеевых за праздничным столом у новогодней ёлки" class="w-full h-auto" loading="eager">
+                <figcaption class="px-5 py-3 text-sm text-gray-500">Семья Тимофеевых</figcaption>
+            </figure>
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-indigo-800 mb-1"><i class="fas fa-calendar-days mr-2"></i>Ближайшие даты</h2>
+                <p class="text-sm text-gray-500 mb-2">Памятные события семьи</p>
+                <ul id="upcomingDates" class="divide-y divide-gray-100"></ul>
+                <a href="kalendar-dat.html" class="inline-block mt-4 text-indigo-700 font-semibold hover:underline">Весь календарь <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-center text-indigo-800">Наша семья в цифрах</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-indigo-50 p-4 rounded-lg"><div class="text-3xl md:text-4xl font-bold text-indigo-700 mb-1">14</div><div class="text-gray-600">поколений</div></div>
+                <div class="bg-indigo-50 p-4 rounded-lg"><div class="text-3xl md:text-4xl font-bold text-indigo-700 mb-1">7150</div><div class="text-gray-600">человек в древе</div></div>
+                <div class="bg-indigo-50 p-4 rounded-lg"><div class="text-3xl md:text-4xl font-bold text-indigo-700 mb-1">8</div><div class="text-gray-600">основных фамилий</div></div>
+                <div class="bg-indigo-50 p-4 rounded-lg"><div class="text-3xl md:text-4xl font-bold text-indigo-700 mb-1">1645</div><div class="text-gray-600">самый ранний предок</div></div>
+            </div>
+            <p class="mt-5 text-center text-sm text-gray-500">Основные фамилии: Тимофеевы, Усачевы, Волковы, Лопатины, Воронцовы, Чекмаревы, Носовы, Галяевы.</p>
+        </section>
+
+        <h2 class="text-3xl font-bold mb-8 text-center text-indigo-800">Исследуйте историю семьи</h2>
+        <div id="sectionCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6"></div>
+        <div id="sectionCardsSmall" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; <span id="footerYear">2026</span> Семейное древо Тимофеевых и Воронцовых</p>
+        </div>
+    </footer>
+    <script src="assets/js/site.js"></script>
+</body>
+</html>

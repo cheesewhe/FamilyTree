@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Древо семьи | Семейное древо</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg { background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url('https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1471&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #4f46e5; transition: width .3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .tree-frame-wrap { position: relative; height: 72vh; min-height: 520px; border: 1px solid #e5e7eb; border-radius: .75rem; overflow: hidden; background: #fff; }
+        .tree-frame { width: 100%; height: 100%; border: 0; background: #fff; }
+        .tool-btn { border: 1px solid #d1d5db; border-radius: .5rem; padding: .45rem .7rem; background: #fff; color: #374151; font-size: .9rem; line-height: 1; }
+        .tool-btn:hover { background: #f9fafb; }
+        .tool-btn.active { background: #eef2ff; border-color: #818cf8; color: #4338ca; }
+        .chip-btn { border: 1px solid #d1d5db; border-radius: 999px; padding: .3rem .7rem; font-size: .78rem; color: #374151; background: #fff; }
+        .chip-btn.active { background: #e0e7ff; border-color: #818cf8; color: #3730a3; }
+        .mode-panel { display: none; }
+        .mode-panel.active { display: block; }
+        .timeline-item { border-left: 3px solid #818cf8; padding-left: .85rem; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+    <header class="hero-bg text-white py-14 px-4">
+        <div class="container mx-auto">
+            <div class="flex items-center gap-4 mb-4"><i class="fas fa-tree text-3xl"></i><h1 class="text-3xl md:text-5xl font-bold">Древо семьи</h1></div>
+            <p class="text-lg text-white/90">Сегодня: <span id="todayDate" class="font-semibold"></span></p>
+            <div class="mt-6 flex flex-wrap gap-4"><a href="osnovnaya-stranica.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Основная страница</a>
+<a href="drevo-semi.html" class="nav-link text-indigo-200 font-semibold text-sm md:text-base">Древо семьи</a>
+<a href="timofeevy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Тимофеевы</a>
+<a href="vorontsovy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Воронцовы</a>
+<a href="dokumenty-i-arhivy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Документы и архивы</a>
+<a href="karta-obitaniya-predkov.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Карта обитания предков</a>
+<a href="k-80-letiyu-pobedy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">К 80-летию Победы</a>
+<a href="blog-novosti.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Блог / новости</a>
+<a href="kalendar-dat.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">Календарь дат</a>
+<a href="dnk-genealogiya.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">ДНК-генеалогия</a>
+<a href="100-russkiy.html" class="nav-link text-white/90 hover:text-white text-sm md:text-base">100%-ный русский</a></div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-indigo-800">Интерактивное семейное древо</h2>
+                    <p class="text-gray-600 mt-2">Режимы: древо, хронология и ветви. Поиск, фильтры, фокус-линия и мини-досье.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="modeTreeBtn" class="tool-btn active" type="button">Древо</button>
+                    <button id="modeTimelineBtn" class="tool-btn" type="button">Хронология</button>
+                    <button id="modeBranchesBtn" class="tool-btn" type="button">Ветви</button>
+                </div>
+            </div>
+
+            <div class="mt-5 grid grid-cols-1 lg:grid-cols-4 gap-5">
+                <div id="treeMainCol" class="lg:col-span-4 space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="personSearch" type="text" placeholder="Поиск по имени, месту или подписи в узле..." class="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button class="chip-btn" data-filter="hasPhoto">Есть фото</button>
+                        <button class="chip-btn" data-filter="hasDates">Есть даты</button>
+                        <button class="chip-btn" data-filter="needReview">Нужна проверка</button>
+                        <button class="chip-btn" data-filter="hasBirthPlace">Есть место рождения</button>
+                    </div>
+
+                    <div id="treeModePanel" class="mode-panel active">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <button id="zoomOutBtn" class="tool-btn" type="button"><i class="fas fa-search-minus"></i></button>
+                            <button id="zoomInBtn" class="tool-btn" type="button"><i class="fas fa-search-plus"></i></button>
+                            <button id="resetViewBtn" class="tool-btn" type="button"><i class="fas fa-arrows-rotate mr-1"></i>Сброс вида</button>
+                        </div>
+                        <div class="tree-frame-wrap">
+                            <iframe id="treeFrame" class="tree-frame" src="Timo-Family.html" title="Семейное древо"></iframe>
+                        </div>
+                    </div>
+
+                    <div id="timelineModePanel" class="mode-panel bg-gray-50 rounded-lg border border-gray-200 p-4">
+                        <h3 class="font-bold text-indigo-800 mb-3">Хронология семьи</h3>
+                        <div id="timelineList" class="space-y-3 max-h-[60vh] overflow-y-auto"></div>
+                    </div>
+
+                    <div id="branchesModePanel" class="mode-panel bg-gray-50 rounded-lg border border-gray-200 p-4">
+                        <h3 class="font-bold text-indigo-800 mb-3">Ветви семьи</h3>
+                        <div id="branchesList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+
+                <aside id="sidePanel" class="hidden lg:col-span-1">
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <h3 class="font-bold text-indigo-800 mb-3">Сведения</h3>
+                        <div id="personCard" class="text-sm text-gray-600 space-y-2">
+                            <div class="w-16 h-16 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl"><i class="fas fa-user"></i></div>
+                            <p>Выберите человека на дереве или через поиск.</p>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 gap-2">
+                            <button id="toParentBtn" class="tool-btn" type="button">К родителям</button>
+                            <button id="toChildBtn" class="tool-btn" type="button">К детям</button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-10 mt-12">
+        <div class="container mx-auto px-4 text-center text-gray-300">
+            <p>&copy; 2026 Семейное древо Тимофеевых и Воронцовых</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = document.getElementById('todayDate');
+            if (today) today.textContent = new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: 'long', year: 'numeric', weekday: 'long' }).format(new Date());
+
+            const treeFrame = document.getElementById('treeFrame');
+            const personSearch = document.getElementById('personSearch');
+            const personCard = document.getElementById('personCard');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const resetViewBtn = document.getElementById('resetViewBtn');
+            const toParentBtn = document.getElementById('toParentBtn');
+            const toChildBtn = document.getElementById('toChildBtn');
+            const sidePanel = document.getElementById('sidePanel');
+            const treeMainCol = document.getElementById('treeMainCol');
+            const timelineList = document.getElementById('timelineList');
+            const branchesList = document.getElementById('branchesList');
+            const filterBtns = Array.from(document.querySelectorAll('[data-filter]'));
+            const modeButtons = { tree: document.getElementById('modeTreeBtn'), timeline: document.getElementById('modeTimelineBtn'), branches: document.getElementById('modeBranchesBtn') };
+            const modePanels = { tree: document.getElementById('treeModePanel'), timeline: document.getElementById('timelineModePanel'), branches: document.getElementById('branchesModePanel') };
+
+            let svgEl = null, doc = null, nodes = [], selectedObj = null;
+            let zoom = 1, panX = 0, panY = 0, dragging = false, dragStartX = 0, dragStartY = 0;
+            let lineSegments = [];
+            let generationCenters = [];
+            const activeFilters = new Set();
+
+            function setStatus(msg) { console.info(msg); }
+
+            function switchMode(mode) {
+                Object.keys(modePanels).forEach((k) => {
+                    modePanels[k].classList.toggle('active', k === mode);
+                    modeButtons[k].classList.toggle('active', k === mode);
+                });
+            }
+            modeButtons.tree.addEventListener('click', () => switchMode('tree'));
+            modeButtons.timeline.addEventListener('click', () => switchMode('timeline'));
+            modeButtons.branches.addEventListener('click', () => switchMode('branches'));
+
+            function showSidePanel() {
+                sidePanel.classList.remove('hidden');
+                treeMainCol.classList.remove('lg:col-span-4');
+                treeMainCol.classList.add('lg:col-span-3');
+            }
+            function hideSidePanel() {
+                sidePanel.classList.add('hidden');
+                treeMainCol.classList.remove('lg:col-span-3');
+                treeMainCol.classList.add('lg:col-span-4');
+            }
+
+            function applyTransform() {
+                if (!svgEl) return;
+                svgEl.style.transformOrigin = '0 0';
+                svgEl.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
+            }
+            const clampZoom = (v) => Math.min(3.2, Math.max(0.18, v));
+            function resetView() { zoom = 0.28; panX = 0; panY = 0; applyTransform(); }
+
+            function simplifyRelationLabel(text) {
+                const n = text.toLowerCase();
+                const p = (n.match(/пра/g) || []).length;
+                if (p >= 3 && (n.includes('дед') || n.includes('баб'))) return (n.includes('баб') ? 'Предок по женской линии' : 'Предок по мужской линии') + ' (' + (p + 1) + '-е колено)';
+                return text;
+            }
+            function normalizeNodeTexts(g) {
+                const rect = g.querySelector('rect.s9, rect.s13, rect.s0');
+                const texts = Array.from(g.querySelectorAll('text'));
+                if (!texts.length) return;
+                if (texts.length > 4) texts.slice(4).forEach((t) => t.remove());
+                const cx = rect ? (Number(rect.getAttribute('x') || 0) + Number(rect.getAttribute('width') || 240) / 2) : null;
+                Array.from(g.querySelectorAll('text')).forEach((t) => {
+                    let v = simplifyRelationLabel((t.textContent || '').trim());
+                    if (v.length > 36) v = v.slice(0, 33) + '...';
+                    t.textContent = v;
+                    t.setAttribute('font-size', '10.8');
+                    if (cx !== null) { t.setAttribute('x', cx); t.setAttribute('text-anchor', 'middle'); }
+                });
+            }
+            const parseYear = (raw) => { const m = raw.match(/(1[6-9][0-9]{2}|20[0-9]{2})/); return m ? Number(m[1]) : null; };
+            function detectBranch(raw) {
+                const t = raw.toLowerCase();
+                if (t.includes('тимофе')) return 'Тимофеевы';
+                if (t.includes('воронцов')) return 'Воронцовы';
+                if (t.includes('волков')) return 'Волковы';
+                if (t.includes('усачев')) return 'Усачевы';
+                if (t.includes('чекмар')) return 'Чекмаревы';
+                if (t.includes('носов')) return 'Носовы';
+                return 'Другие';
+            }
+            function hasPhoto(el) { const img = el.querySelector('image'); if (!img) return false; const href = img.getAttribute('xlink:href') || img.getAttribute('href') || ''; return href && !href.endsWith('/4.png'); }
+            const hasDates = (raw) => /(~?\\d{4}|\\?\\s*-\\s*\\d{4}|\\d{2}\\.\\d{2}\\.\\d{4})/.test(raw);
+            const hasBirthPlace = (raw) => /(д\\.|с\\.|г\\.|пос\\.|дерев|город|уезд|губерн)/i.test(raw);
+            const needReview = (raw) => /\\?|~|неизв|примерн/i.test(raw);
+            function parseNodeInfo(g) {
+                const txt = Array.from(g.querySelectorAll('text')).map((t) => (t.textContent || '').trim()).filter(Boolean);
+                const raw = txt.join(' | ');
+                return { title: txt[0] || 'Без имени', details: txt.slice(1), raw, year: parseYear(raw), branch: detectBranch(raw) };
+            }
+            function bbox(el) { try { const b = el.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height, cx: b.x + b.width / 2, cy: b.y + b.height / 2 }; } catch { return { x: 0, y: 0, w: 1, h: 1, cx: 0, cy: 0 }; } }
+            function branchColor(b) { return ({ 'Тимофеевы': '#2563eb', 'Воронцовы': '#7c3aed', 'Волковы': '#b45309', 'Усачевы': '#0f766e', 'Чекмаревы': '#b91c1c', 'Носовы': '#4338ca', 'Другие': '#6b7280' })[b] || '#6b7280'; }
+            function clearVisualState() {
+                nodes.forEach((n) => {
+                    n.el.style.opacity = '1'; n.el.style.filter = '';
+                    const s = n.el.querySelector('rect.s12');
+                    if (s) { s.setAttribute('stroke', '#606060'); s.setAttribute('stroke-width', '1'); }
+                });
+            }
+            function applyBranchColors() {
+                nodes.forEach((n) => {
+                    const s = n.el.querySelector('rect.s12');
+                    if (s) { s.setAttribute('stroke', branchColor(n.info.branch)); s.setAttribute('stroke-width', '1.15'); }
+                });
+            }
+            function renderCard(obj) {
+                if (!obj) { personCard.innerHTML = '<div class=\"w-16 h-16 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl\"><i class=\"fas fa-user\"></i></div><p>Выберите человека на дереве или через поиск.</p>'; return; }
+                const photo = obj.hasPhoto ? '<div class=\"w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl\"><i class=\"fas fa-image\"></i></div>' : '<div class=\"w-16 h-16 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl\"><i class=\"fas fa-user\"></i></div>';
+                const year = obj.info.year ? '<span class=\"text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded\">~' + obj.info.year + '</span>' : '';
+                personCard.innerHTML = photo + '<p class=\"font-semibold text-gray-900 text-base mt-2\">' + obj.info.title + '</p><div class=\"text-xs text-gray-500\">Ветвь: ' + obj.info.branch + ' ' + year + '</div>' + (obj.info.details.length ? '<ul class=\"list-disc pl-5 space-y-1 mt-2\">' + obj.info.details.map((d) => '<li>' + d + '</li>').join('') + '</ul>' : '<p class=\"mt-2\">Дополнительных данных в узле нет.</p>');
+            }
+            function highlightNode(n) {
+                if (!n) return;
+                selectedObj = n;
+                clearVisualState(); applyBranchColors();
+                n.el.style.opacity = '1'; n.el.style.filter = 'drop-shadow(0 0 6px rgba(79,70,229,.7))';
+                const s = n.el.querySelector('rect.s12'); if (s) { s.setAttribute('stroke', '#4f46e5'); s.setAttribute('stroke-width', '2.2'); }
+                renderCard(n);
+                showSidePanel();
+            }
+            function focusNode(n) {
+                if (!n || !svgEl) return;
+                const r = treeFrame.getBoundingClientRect();
+                zoom = clampZoom(Math.max(.58, zoom));
+                panX = (r.width * .45) - (n.bbox.cx * zoom);
+                panY = (r.height * .45) - (n.bbox.cy * zoom);
+                applyTransform(); highlightNode(n);
+            }
+            function computeGenerations() {
+                const sorted = nodes.map(n => n.bbox.cy).sort((a, b) => a - b);
+                const groups = [];
+                sorted.forEach((y) => {
+                    if (!groups.length || Math.abs(y - groups[groups.length - 1][0]) > 38) groups.push([y]);
+                    else groups[groups.length - 1].push(y);
+                });
+                generationCenters = groups.map(g => g.reduce((s, v) => s + v, 0) / g.length);
+                nodes.forEach((n) => {
+                    let idx = 0;
+                    let best = Number.POSITIVE_INFINITY;
+                    generationCenters.forEach((c, i) => {
+                        const d = Math.abs(c - n.bbox.cy);
+                        if (d < best) { best = d; idx = i; }
+                    });
+                    n.generation = idx;
+                });
+            }
+
+            function computeTrunkAnchors() {
+                const near = 12;
+                nodes.forEach((n) => {
+                    const left = n.bbox.x;
+                    const right = n.bbox.x + n.bbox.w;
+                    const top = n.bbox.y;
+                    const bottom = n.bbox.y + n.bbox.h;
+
+                    const upLines = lineSegments.filter((ln) =>
+                        ln.isVertical &&
+                        ln.x >= left - 4 && ln.x <= right + 4 &&
+                        ln.y1 <= top + near && ln.y2 >= top - near
+                    );
+                    const downLines = lineSegments.filter((ln) =>
+                        ln.isVertical &&
+                        ln.x >= left - 4 && ln.x <= right + 4 &&
+                        ln.y1 <= bottom + near && ln.y2 >= bottom - near
+                    );
+
+                    const bestUp = upLines.sort((a, b) => Math.abs(a.x - n.bbox.cx) - Math.abs(b.x - n.bbox.cx))[0];
+                    const bestDown = downLines.sort((a, b) => Math.abs(a.x - n.bbox.cx) - Math.abs(b.x - n.bbox.cx))[0];
+                    n.trunkUpX = bestUp ? bestUp.x : null;
+                    n.trunkDownX = bestDown ? bestDown.x : null;
+                });
+            }
+
+            function hasConnectorBetween(a, b) {
+                const minY = Math.min(a.bbox.cy, b.bbox.cy) - 18;
+                const maxY = Math.max(a.bbox.cy, b.bbox.cy) + 18;
+                return lineSegments.some((ln) => {
+                    if (!ln.isHorizontal) return false;
+                    if (ln.y < minY || ln.y > maxY) return false;
+                    const minX = Math.min(a.bbox.cx, b.bbox.cx) - 18;
+                    const maxX = Math.max(a.bbox.cx, b.bbox.cx) + 18;
+                    return ln.x1 <= maxX && ln.x2 >= minX;
+                });
+            }
+
+            function nearestRelative(kind) {
+                if (!selectedObj || !generationCenters.length) return null;
+                const wantParent = kind === 'parent';
+                const step = wantParent ? -1 : 1;
+                const targetGen = selectedObj.generation + step;
+                const direct = nodes.filter((n) => n !== selectedObj && n.generation === targetGen);
+                const pool = direct.length ? direct : nodes.filter((n) => n !== selectedObj && (wantParent ? n.generation < selectedObj.generation : n.generation > selectedObj.generation));
+                if (!pool.length) return null;
+
+                // First, try deterministic trunk alignment (best signal for parent/child).
+                const sourceTrunk = wantParent ? selectedObj.trunkUpX : selectedObj.trunkDownX;
+                if (sourceTrunk !== null) {
+                    const strict = pool.filter((n) => {
+                        const candidateTrunk = wantParent ? (n.trunkDownX ?? n.trunkUpX) : (n.trunkUpX ?? n.trunkDownX);
+                        return candidateTrunk !== null && Math.abs(candidateTrunk - sourceTrunk) <= 6;
+                    });
+                    if (strict.length) {
+                        strict.sort((a, b) => {
+                            const ay = Math.abs(a.bbox.cy - selectedObj.bbox.cy);
+                            const by = Math.abs(b.bbox.cy - selectedObj.bbox.cy);
+                            const ax = Math.abs(a.bbox.cx - selectedObj.bbox.cx);
+                            const bx = Math.abs(b.bbox.cx - selectedObj.bbox.cx);
+                            return (ay + ax * 0.35) - (by + bx * 0.35);
+                        });
+                        return strict[0];
+                    }
+                }
+
+                let best = null;
+                let bestScore = Number.POSITIVE_INFINITY;
+                pool.forEach((n) => {
+                    const dy = Math.abs(n.bbox.cy - selectedObj.bbox.cy);
+                    const dx = Math.abs(n.bbox.cx - selectedObj.bbox.cx);
+                    if (dx > 420) return;
+                    let score = (dy * 1.6) + dx;
+                    if (n.info.branch !== selectedObj.info.branch) score += 45;
+                    if (hasConnectorBetween(n, selectedObj)) score -= 120;
+                    const nearVerticalLink = lineSegments.some((ln) => {
+                        if (!ln.isVertical) return false;
+                        const avgX = (n.bbox.cx + selectedObj.bbox.cx) / 2;
+                        if (Math.abs(ln.x - avgX) > 120 && Math.abs(ln.x - n.bbox.cx) > 90 && Math.abs(ln.x - selectedObj.bbox.cx) > 90) return false;
+                        const minY = Math.min(n.bbox.cy, selectedObj.bbox.cy) - 12;
+                        const maxY = Math.max(n.bbox.cy, selectedObj.bbox.cy) + 12;
+                        return ln.y1 <= maxY && ln.y2 >= minY;
+                    });
+                    if (nearVerticalLink) score -= 240;
+                    if (Math.abs(n.bbox.cx - selectedObj.bbox.cx) < 110) score -= 60;
+                    if (sourceTrunk !== null) {
+                        const candidateTrunk = wantParent ? (n.trunkDownX ?? n.trunkUpX) : (n.trunkUpX ?? n.trunkDownX);
+                        if (candidateTrunk !== null) score += Math.abs(candidateTrunk - sourceTrunk) * 0.8;
+                    }
+                    if (score < bestScore) { bestScore = score; best = n; }
+                });
+                return best;
+            }
+            function applyFilters(base) {
+                return base.filter((n) => {
+                    if (activeFilters.has('hasPhoto') && !n.hasPhoto) return false;
+                    if (activeFilters.has('hasDates') && !n.hasDates) return false;
+                    if (activeFilters.has('needReview') && !n.needReview) return false;
+                    if (activeFilters.has('hasBirthPlace') && !n.hasBirthPlace) return false;
+                    return true;
+                });
+            }
+            function renderTimeline(list) {
+                const s = list.filter((n) => n.info.year).sort((a, b) => a.info.year - b.info.year);
+                if (!s.length) { timelineList.innerHTML = '<p class=\"text-gray-500\">Нет данных с явным годом.</p>'; return; }
+                timelineList.innerHTML = s.slice(0, 400).map((n) => '<div class=\"timeline-item py-1\"><div class=\"font-semibold text-gray-900\">' + n.info.title + '</div><div class=\"text-sm text-indigo-700\">' + n.info.year + '</div><div class=\"text-sm text-gray-600 truncate\">' + (n.info.details[0] || '') + '</div></div>').join('');
+            }
+            function renderBranches(list) {
+                const g = {};
+                list.forEach((n) => { (g[n.info.branch] ||= []).push(n); });
+                const e = Object.entries(g).sort((a, b) => b[1].length - a[1].length);
+                if (!e.length) { branchesList.innerHTML = '<p class=\"text-gray-500\">Нет данных для отображения ветвей.</p>'; return; }
+                branchesList.innerHTML = e.map(([name, arr]) => '<button data-branch=\"' + name + '\" class=\"text-left border border-gray-200 rounded-lg p-3 bg-white hover:bg-indigo-50 transition\"><div class=\"flex items-center justify-between\"><span class=\"font-semibold\" style=\"color:' + branchColor(name) + '\">' + name + '</span><span class=\"text-xs text-gray-500\">' + arr.length + ' чел.</span></div><div class=\"text-xs text-gray-500 mt-1\">Нажмите, чтобы отфильтровать</div></button>').join('');
+                Array.from(branchesList.querySelectorAll('button')).forEach((b) => b.addEventListener('click', () => {
+                    personSearch.value = '';
+                    const branchNodes = applyFilters(nodes).filter((n) => n.info.branch === b.dataset.branch);
+                    if (branchNodes.length) focusNode(branchNodes[0]);
+                }));
+            }
+            function runSearch() {
+                const q = personSearch.value.trim().toLowerCase();
+                let list = applyFilters(nodes);
+                if (q) list = list.filter((n) => n.info.raw.toLowerCase().includes(q));
+                if (q && list.length > 0) {
+                    focusNode(list[0]);
+                } else if (q && list.length === 0) {
+                    setStatus('Поиск: ничего не найдено.', true);
+                }
+                renderTimeline(list); renderBranches(list);
+            }
+            function bindTree() {
+                try {
+                    doc = treeFrame.contentDocument || treeFrame.contentWindow.document;
+                    const frameWin = treeFrame.contentWindow;
+                    svgEl = doc.querySelector('svg');
+                    if (!svgEl) { setStatus('SVG-дерево не найдено в Timo-Family.html'); return; }
+                    svgEl.style.willChange = 'transform'; svgEl.style.transition = 'transform .12s ease-out';
+
+                    // Open original modal only on second click on same person.
+                    if (frameWin && typeof frameWin.nodeclick === 'function') {
+                        const originalNodeClick = frameWin.nodeclick;
+                        let pendingId = null;
+                        let pendingTimer = null;
+                        frameWin.nodeclick = function(id) {
+                            if (pendingId === id) {
+                                pendingId = null;
+                                if (pendingTimer) clearTimeout(pendingTimer);
+                                originalNodeClick(id);
+                                return;
+                            }
+                            pendingId = id;
+                            if (pendingTimer) clearTimeout(pendingTimer);
+                            pendingTimer = setTimeout(() => { pendingId = null; }, 1400);
+                        };
+                    }
+
+                    const clickable = Array.from(doc.querySelectorAll('g.s8[onclick*=\"nodeclick\"]'));
+                    const lines = Array.from(doc.querySelectorAll('line'));
+                    clickable.forEach(normalizeNodeTexts);
+                    nodes = clickable.map((el) => { const info = parseNodeInfo(el); return { el, info, bbox: bbox(el), hasPhoto: hasPhoto(el), hasDates: hasDates(info.raw), needReview: needReview(info.raw), hasBirthPlace: hasBirthPlace(info.raw), generation: 0 }; });
+                    lineSegments = lines.map((ln) => {
+                        const x1 = Number(ln.getAttribute('x1') || 0);
+                        const y1 = Number(ln.getAttribute('y1') || 0);
+                        const x2 = Number(ln.getAttribute('x2') || 0);
+                        const y2 = Number(ln.getAttribute('y2') || 0);
+                        return {
+                            x1: Math.min(x1, x2),
+                            x2: Math.max(x1, x2),
+                            y1: Math.min(y1, y2),
+                            y2: Math.max(y1, y2),
+                            x: (x1 + x2) / 2,
+                            y: (y1 + y2) / 2,
+                            isHorizontal: Math.abs(y1 - y2) < 2.1,
+                            isVertical: Math.abs(x1 - x2) < 2.1
+                        };
+                    });
+                    computeGenerations();
+                    computeTrunkAnchors();
+                    nodes.forEach((n) => n.el.addEventListener('click', () => highlightNode(n), true));
+
+                    doc.addEventListener('click', (ev) => {
+                        const node = ev.target && ev.target.closest ? ev.target.closest('g.s8[onclick*=\"nodeclick\"]') : null;
+                        if (!node) {
+                            selectedObj = null;
+                            hideSidePanel();
+                            clearVisualState();
+                            applyBranchColors();
+                        }
+                    }, true);
+
+                    applyBranchColors(); resetView(); runSearch();
+                    setStatus('Древо загружено: найдено ' + nodes.length + ' узлов. Режимы и фильтры активны.', false);
+                } catch (_e) { setStatus('Не удалось подключить инструменты к дереву. Проверьте локальный запуск и наличие всех файлов.'); }
+            }
+
+            treeFrame.addEventListener('load', bindTree);
+            personSearch.addEventListener('input', runSearch);
+            filterBtns.forEach((btn) => btn.addEventListener('click', () => { const k = btn.dataset.filter; if (activeFilters.has(k)) activeFilters.delete(k); else activeFilters.add(k); btn.classList.toggle('active'); runSearch(); }));
+            zoomInBtn.addEventListener('click', () => { zoom = clampZoom(zoom + .12); applyTransform(); });
+            zoomOutBtn.addEventListener('click', () => { zoom = clampZoom(zoom - .12); applyTransform(); });
+            resetViewBtn.addEventListener('click', resetView);
+            toParentBtn.addEventListener('click', () => { const p = nearestRelative('parent'); if (p) focusNode(p); });
+            toChildBtn.addEventListener('click', () => { const c = nearestRelative('child'); if (c) focusNode(c); });
+            treeFrame.addEventListener('wheel', (e) => { e.preventDefault(); zoom = clampZoom(zoom + (e.deltaY > 0 ? -0.08 : 0.08)); applyTransform(); }, { passive: false });
+            treeFrame.addEventListener('mousedown', (e) => { dragging = true; dragStartX = e.clientX - panX; dragStartY = e.clientY - panY; });
+            window.addEventListener('mousemove', (e) => { if (!dragging) return; panX = e.clientX - dragStartX; panY = e.clientY - dragStartY; applyTransform(); });
+            window.addEventListener('mouseup', () => { dragging = false; });
+
+            hideSidePanel();
+        });
+    </script>
+</body>
+</html>
