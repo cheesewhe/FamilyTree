@@ -7,7 +7,7 @@
   --card: #FBFBF8;
   --ink: #1E2433;
   --ink-soft: #545A5E;
-  --ink-faint: #8A918C;
+  --ink-faint: #636A66;   /* контраст ≥ 4.5:1 на бумаге и карточке */
   --rule: #D6DAD4;
   --stamp: #5B3E9E;
   --stamp-soft: #ECE7F6;
@@ -22,6 +22,7 @@
   --shadow-card: 0 1px 0 rgba(30, 36, 51, .06), 0 8px 24px -16px rgba(30, 36, 51, .35);
 }
 
+*, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--paper); color: var(--ink);
@@ -153,9 +154,9 @@ main { padding-bottom: 72px; }
 
 /* ---------- Типы событий ---------- */
 .badge { display: inline-block; font-size: .74rem; padding: 1px 8px; border-radius: 3px; font-weight: 600; line-height: 1.6; }
-.badge-birth { background: var(--father-soft); color: var(--father); }
+.badge-birth { background: var(--father-soft); color: #2A659A; }
 .badge-death { background: #E4E6E3; color: var(--ink-soft); }
-.badge-wedding { background: var(--mother-soft); color: var(--mother); }
+.badge-wedding { background: var(--mother-soft); color: #A03C4E; }
 .badge-memory { background: var(--stamp-soft); color: var(--stamp); }
 
 /* ---------- Лист (основной контейнер текстовых страниц) ---------- */
